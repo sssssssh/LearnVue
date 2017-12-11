@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>观察者模式</title>
+</head>
+<body>
+    <input id="inputEl" type="text" v-model="name">
+    <div v-model="name"></div>
+    <script>
+        let data = {};
+        let modelMaps = {};
+        let pubSub = {
+            callbacks: {},
+
+            on(msg, callback) {
+                this.callbacks[msg] = this.callbacks[msg] || [];
+                this.callbacks[msg].push(callback);
+            },
+
+            publish(msg) {
+                let callbacks = this.callbacks[msg] || [];
+
+                for (let i = 0, len = callbacks.length; i < len; i++) {
+                    callbacks[i].apply(this, Array.prototype.slice.call(arguments, 1));
+                }
+            }
+        };
+
+        pubSub.on('ui-update', (attr, value) => {
+            data[attr] = value;
+            pubSub.publish('model-update', attr, value);
+        });
+
+        pubSub.on('model-update', (attr, value) => {
+            for (let key in modelMaps) {
+                if (key === attr) {
+                    modelMaps[attr].forEach(($el) => {
+                        $el.innerHTML = value;
+                    });
+                }
+            }
+        });
+
+        // 获取所有v-model
+        document.querySelectorAll('[v-model]').forEach(($el) => {
+            let attr = $el.getAttribute('v-model');
+            if (!(attr in modelMaps)) {
+                modelMaps[attr] = [];
+            }
+
+            modelMaps[attr].push($el);
+        });
+
+        document.getElementById('inputEl').addEventListener('keyup', function (e) {
+            let $el = e.target;
+            let attr = $el.getAttribute('v-model');
+
+            pubSub.publish('ui-update', attr, $el.value);
+        });
+    </script>
+</body>
+</html>
