@@ -5,13 +5,13 @@ import { eventsMixin } from './events'
 import { lifecycleMixin } from './lifecycle'
 import { warn } from '../util/index'
 
-function Vue (options) {
-  if (process.env.NODE_ENV !== 'production' &&
-    !(this instanceof Vue) // 必须用new调用这个函数
-  ) {
-    warn('Vue is a constructor and should be called with the `new` keyword')
-  }
-  this._init(options)
+function Vue(options) {
+    if (process.env.NODE_ENV !== 'production' &&
+        !(this instanceof Vue) // 必须用new调用这个函数
+    ) {
+        warn('Vue is a constructor and should be called with the `new` keyword')
+    }
+    this._init(options)
 }
 
 initMixin(Vue)

@@ -7,24 +7,24 @@ import modules from './modules/index'
 import directives from './directives/index'
 
 import {
-  isUnaryTag,
-  mustUseProp,
-  isReservedTag,
-  canBeLeftOpenTag,
-  getTagNamespace
+    isUnaryTag,
+    mustUseProp,
+    isReservedTag,
+    canBeLeftOpenTag,
+    getTagNamespace
 } from '../util/index'
 
 export const baseOptions: CompilerOptions = {
-  modules,
-  directives,
-  isUnaryTag,
-  mustUseProp,
-  canBeLeftOpenTag,
-  isReservedTag,
-  getTagNamespace,
-  preserveWhitespace: false,
-  staticKeys: genStaticKeys(modules)
+    modules,
+    directives,
+    isUnaryTag,
+    mustUseProp,
+    canBeLeftOpenTag,
+    isReservedTag,
+    getTagNamespace,
+    preserveWhitespace: false,
+    staticKeys: genStaticKeys(modules)
 }
 
-const { compile, compileToFunctions } = createCompiler(baseOptions)
+const {compile, compileToFunctions} = createCompiler(baseOptions)
 export { compile, compileToFunctions }

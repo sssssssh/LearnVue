@@ -7,11 +7,11 @@ import platformDirectives from 'weex/runtime/directives/index'
 import platformComponents from 'weex/runtime/components/index'
 
 import {
-  query,
-  mustUseProp,
-  isReservedTag,
-  isRuntimeComponent,
-  isUnknownElement
+    query,
+    mustUseProp,
+    isReservedTag,
+    isRuntimeComponent,
+    isUnknownElement
 } from 'weex/util/index'
 
 // install platform specific utils
@@ -28,15 +28,13 @@ Vue.options.components = platformComponents
 Vue.prototype.__patch__ = patch
 
 // wrap mount
-Vue.prototype.$mount = function (
-  el?: any,
-  hydrating?: boolean
-): Component {
-  return mountComponent(
-    this,
-    el && query(el, this.$document),
-    hydrating
-  )
+Vue.prototype.$mount = function (el?: any,
+                                 hydrating?: boolean): Component {
+    return mountComponent(
+        this,
+        el && query(el, this.$document),
+        hydrating
+    )
 }
 
 export default Vue

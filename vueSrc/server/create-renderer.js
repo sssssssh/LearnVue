@@ -7,97 +7,93 @@ import TemplateRenderer from './template-renderer/index'
 import type { ClientManifest } from './template-renderer/index'
 
 export type Renderer = {
-  renderToString: (component: Component, context: any, cb: any) => void;
-  renderToStream: (component: Component, context?: Object) => stream$Readable;
+    renderToString: (component: Component, context: any, cb: any) => void;
+    renderToStream: (component: Component, context?: Object) => stream$Readable;
 };
 
 type RenderCache = {
-  get: (key: string, cb?: Function) => string | void;
-  set: (key: string, val: string) => void;
-  has?: (key: string, cb?: Function) => boolean | void;
+    get: (key: string, cb?: Function) => string | void;
+    set: (key: string, val: string) => void;
+    has?: (key: string, cb?: Function) => boolean | void;
 };
 
 export type RenderOptions = {
-  modules?: Array<(vnode: VNode) => ?string>;
-  directives?: Object;
-  isUnaryTag?: Function;
-  cache?: RenderCache;
-  template?: string;
-  inject?: boolean;
-  basedir?: string;
-  shouldPreload?: Function;
-  clientManifest?: ClientManifest;
-  runInNewContext?: boolean | 'once';
+    modules?: Array<(vnode: VNode) => ?string>;
+    directives?: Object;
+    isUnaryTag?: Function;
+    cache?: RenderCache;
+    template?: string;
+    inject?: boolean;
+    basedir?: string;
+    shouldPreload?: Function;
+    clientManifest?: ClientManifest;
+    runInNewContext?: boolean | 'once';
 };
 
-export function createRenderer ({
-  modules = [],
-  directives = {},
-  isUnaryTag = (() => false),
-  template,
-  inject,
-  cache,
-  shouldPreload,
-  clientManifest
-}: RenderOptions = {}): Renderer {
-  const render = createRenderFunction(modules, directives, isUnaryTag, cache)
-  const templateRenderer = new TemplateRenderer({
-    template,
-    inject,
-    shouldPreload,
-    clientManifest
-  })
+export function createRenderer({
+                                   modules = [],
+                                   directives = {},
+                                   isUnaryTag = (() => false),
+                                   template,
+                                   inject,
+                                   cache,
+                                   shouldPreload,
+                                   clientManifest
+                               }: RenderOptions = {}): Renderer {
+    const render = createRenderFunction(modules, directives, isUnaryTag, cache)
+    const templateRenderer = new TemplateRenderer({
+        template,
+        inject,
+        shouldPreload,
+        clientManifest
+    })
 
-  return {
-    renderToString (
-      component: Component,
-      context: any,
-      done: any
-    ): void {
-      if (typeof context === 'function') {
-        done = context
-        context = {}
-      }
-      if (context) {
-        templateRenderer.bindRenderFns(context)
-      }
-      let result = ''
-      const write = createWriteFunction(text => {
-        result += text
-        return false
-      }, done)
-      try {
-        render(component, write, context, () => {
-          if (template) {
-            result = templateRenderer.renderSync(result, context)
-          }
-          done(null, result)
-        })
-      } catch (e) {
-        done(e)
-      }
-    },
+    return {
+        renderToString(component: Component,
+                       context: any,
+                       done: any): void {
+            if (typeof context === 'function') {
+                done = context
+                context = {}
+            }
+            if (context) {
+                templateRenderer.bindRenderFns(context)
+            }
+            let result = ''
+            const write = createWriteFunction(text => {
+                result += text
+                return false
+            }, done)
+            try {
+                render(component, write, context, () => {
+                    if (template) {
+                        result = templateRenderer.renderSync(result, context)
+                    }
+                    done(null, result)
+                })
+            } catch (e) {
+                done(e)
+            }
+        },
 
-    renderToStream (
-      component: Component,
-      context?: Object
-    ): stream$Readable {
-      if (context) {
-        templateRenderer.bindRenderFns(context)
-      }
-      const renderStream = new RenderStream((write, done) => {
-        render(component, write, context, done)
-      })
-      if (!template) {
-        return renderStream
-      } else {
-        const templateStream = templateRenderer.createStream(context)
-        renderStream.on('error', err => {
-          templateStream.emit('error', err)
-        })
-        renderStream.pipe(templateStream)
-        return templateStream
-      }
+        renderToStream(component: Component,
+                       context?: Object): stream$Readable {
+            if (context) {
+                templateRenderer.bindRenderFns(context)
+            }
+            const renderStream = new RenderStream((write, done) => {
+                render(component, write, context, done)
+            })
+            if (!template) {
+                return renderStream
+            } else {
+                const templateStream = templateRenderer.createStream(context)
+                renderStream.on('error', err => {
+                    templateStream.emit('error', err)
+                })
+                renderStream.pipe(templateStream)
+                return templateStream
+            }
+        }
     }
-  }
 }

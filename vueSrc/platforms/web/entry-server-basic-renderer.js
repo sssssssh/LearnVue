@@ -6,8 +6,8 @@ import { isUnaryTag, canBeLeftOpenTag } from './compiler/util'
 import { createBasicRenderer } from 'server/create-basic-renderer'
 
 export default createBasicRenderer({
-  modules,
-  directives,
-  isUnaryTag,
-  canBeLeftOpenTag
+    modules,
+    directives,
+    isUnaryTag,
+    canBeLeftOpenTag
 })
