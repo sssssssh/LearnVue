@@ -27,11 +27,13 @@
             }
         };
 
+        // 监听UI变化事件
         pubSub.on('ui-update', (attr, value) => {
             data[attr] = value;
             pubSub.publish('model-update', attr, value);
         });
 
+        // 监听数据变化事件
         pubSub.on('model-update', (attr, value) => {
             for (let key in modelMaps) {
                 if (key === attr) {
@@ -52,6 +54,7 @@
             modelMaps[attr].push($el);
         });
 
+        // 监听UI变化
         document.getElementById('inputEl').addEventListener('keyup', function (e) {
             let $el = e.target;
             let attr = $el.getAttribute('v-model');

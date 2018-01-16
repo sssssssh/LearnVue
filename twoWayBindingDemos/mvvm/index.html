@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>mvvm</title>
+    <style>
+        #app {
+            font-size: 24px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="msg" value="">
+        <br/>倒计时:<br/>{{seconds}}
+        <br/>vm.msg:<br/>{{msg}}
+    </div>
+
+    <script src="observe.js"></script>
+    <script src="compile.js"></script>
+    <script src="watcher.js"></script>
+    <script src="dep.js"></script>
+    <script src="vue.js"></script>
+
+    <script>
+        let seconds = 10;
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 'hello',
+                seconds
+            }
+        });
+        let intervalTimer = setInterval(() => {
+            seconds--;
+            if (seconds >= 0) {
+                vm.seconds = seconds;
+            } else {
+                clearInterval(intervalTimer);
+            }
+        }, 1000)
+
+        setTimeout(() => {
+            vm.msg = 'hello world';
+        }, seconds * 1000);
+    </script>
+</body>
+</html>

@@ -2,9 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>vue</title>
 </head>
 <body>
-$END$
+<div id="app">
+    <input type="text" v-model="msg">
+    <p>倒计时：{{seconds}}</p>
+    <p>vm.msg = {{msg}}</p>
+</div>
+
+<script src="./node_modules/vue/dist/vue.js"></script>
+<script>
+    let seconds = 10;
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            msg: '',
+            seconds
+        }
+    });
+    let intervalTimer = setInterval(() => {
+        seconds--;
+        if (seconds >= 0) {
+            vm.seconds = seconds;
+        } else {
+            clearInterval(intervalTimer);
+        }
+    }, 1000)
+
+    setTimeout(() => {
+        vm.msg = 'hello world';
+    }, seconds * 1000);
+</script>
 </body>
 </html>
