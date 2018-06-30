@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Proxy</title>
+    <title>observe</title>
 </head>
 <body>
-    
+<script>
+    let vm = {};
+
+    Object.observe(vm, function(changes) {
+        // change
+    });
+</script>
 </body>
 </html>

@@ -1,16 +1,21 @@
 import { forEachValue } from '../util'
 
 // Base data struct for store's module, package with some attribute and method
+// store的模块
 export default class Module {
     constructor(rawModule, runtime) {
         this.runtime = runtime
         // Store some children item
+        // store的子属性？
         this._children = Object.create(null)
         // Store the origin module object which passed by programmer
+        // 保存程序员传递的原始模块对象
         this._rawModule = rawModule
+
         const rawState = rawModule.state
 
         // Store the origin module's state
+        // 存储原始模块state
         this.state = (typeof rawState === 'function' ? rawState() : rawState) || {}
     }
 

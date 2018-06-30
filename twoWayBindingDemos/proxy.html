@@ -2,9 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Proxy</title>
 </head>
 <body>
-$END$
+<script>
+    let vm = {};
+    vm = new Proxy(vm, {
+        get(target, key) {
+            console.log(`你正在获取${key}的值`);
+            return target[key];
+        },
+
+        set(target, key, value) {
+            if (target[key] !== vlue) {
+                console.log(`监听到${key}属性被改为${target[value]}`);
+            }
+
+            return true;
+        }
+    })
+</script>
 </body>
 </html>

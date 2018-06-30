@@ -217,7 +217,8 @@ export function toObject(arr: Array<any>): Object {
 
 /**
  * Perform no operation.
- * Stubbing args to make Flow happy without leaving useless transpiled code
+ * 空函数
+ * Stubbing args to make Flow happy without leaving useless transpiled transpiledcode
  * with ...rest (https://flow.org/blog/2017/05/07/Strict-Function-Call-Arity/)
  */
 export function noop(a?: any, b?: any, c?: any) {}
@@ -287,6 +288,7 @@ export function looseIndexOf(arr: Array<mixed>, val: mixed): number {
 
 /**
  * Ensure a function is called only once.
+ * 确保函数只被调用一次
  */
 export function once(fn: Function): Function {
     let called = false

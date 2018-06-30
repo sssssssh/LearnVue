@@ -3,6 +3,7 @@
 import type Watcher from './watcher'
 import { remove } from '../util/index'
 
+// 内部变量记录Dep id
 let uid = 0
 
 /**
@@ -12,7 +13,7 @@ let uid = 0
 export default class Dep {
     static target: ?Watcher;
     id: number;
-    subs: Array<Watcher>;
+    subs: Array<Watcher>; // 订阅者
 
     constructor() {
         this.id = uid++
@@ -35,6 +36,7 @@ export default class Dep {
 
     notify() {
         // stabilize the subscriber list first
+        // 首先静态化订阅者数组
         const subs = this.subs.slice()
         for (let i = 0, l = subs.length; i < l; i++) {
             subs[i].update()

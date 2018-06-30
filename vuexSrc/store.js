@@ -3,6 +3,7 @@ import devtoolPlugin from './plugins/devtool'
 import ModuleCollection from './module/module-collection'
 import { forEachValue, isObject, isPromise, assert } from './util'
 
+// 安装时绑定
 let Vue // bind on install
 
 export class Store {
@@ -10,19 +11,23 @@ export class Store {
         // Auto install if it is not done yet and `window` has `Vue`.
         // To allow users to avoid auto-installation in some cases,
         // this code should be placed here. See #731
+        // 如果还没有安装且window.vue存在，则自动安装
         if (!Vue && typeof window !== 'undefined' && window.Vue) {
             install(window.Vue)
         }
 
         if (process.env.NODE_ENV !== 'production') {
+            // 创建store实例前，必须调用`Vue.use(Vuex)`
             assert(Vue, `must call Vue.use(Vuex) before creating a store instance.`)
+            // 需要promise的polyfill
             assert(typeof Promise !== 'undefined', `vuex requires a Promise polyfill in this browser.`)
+            // 必须调用 new Store()，不能直接使用store
             assert(this instanceof Store, `Store must be called with the new operator.`)
         }
 
         const {
-            plugins = [],
-            strict = false
+            plugins = [],    // 插件
+            strict = false   // 严格模式
         } = options
 
         // store internal state
@@ -37,6 +42,7 @@ export class Store {
         this._watcherVM = new Vue()
 
         // bind commit and dispatch to self
+        // 将dispatch & commit 绑定给自己？
         const store = this
         const {dispatch, commit} = this
         this.dispatch = function boundDispatch(type, payload) {
@@ -47,6 +53,7 @@ export class Store {
         }
 
         // strict mode
+        // 严格模式
         this.strict = strict
 
         const state = this._modules.root.state

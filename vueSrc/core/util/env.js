@@ -5,9 +5,11 @@ import { noop } from 'shared/util'
 import { handleError } from './error'
 
 // can we use __proto__?
+// 是否可以用 __proto__
 export const hasProto = '__proto__' in {}
 
 // Browser environment sniffing
+// 浏览器环境嗅探
 export const inBrowser = typeof window !== 'undefined'
 export const UA = inBrowser && window.navigator.userAgent.toLowerCase()
 export const isIE = UA && /msie|trident/.test(UA)
@@ -52,8 +54,10 @@ export const isServerRendering = () => {
 }
 
 // detect devtools
+// 检测调试工具
 export const devtools = inBrowser && window.__VUE_DEVTOOLS_GLOBAL_HOOK__
 
+// 是否native代码
 /* istanbul ignore next */
 export function isNative(Ctor: any): boolean {
     return typeof Ctor === 'function' && /native code/.test(Ctor.toString())
@@ -65,6 +69,8 @@ export const hasSymbol =
 
 /**
  * Defer a task to execute it asynchronously.
+ *
+ * 延迟任务以异步执行它
  */
 export const nextTick = (function () {
     const callbacks = []
@@ -86,6 +92,10 @@ export const nextTick = (function () {
     // UIWebView in iOS >= 9.3.3 when triggered in touch event handlers. It
     // completely stops working after triggering a few times... so, if native
     // Promise is available, we will use it:
+    //
+    // promise存在用native promise
+    // 非IE 且 MutationObserver存在，则使用MutationObserver
+    // 其他情况使用 setTimeout
     /* istanbul ignore if */
     if (typeof Promise !== 'undefined' && isNative(Promise)) {
         var p = Promise.resolve()
@@ -126,7 +136,9 @@ export const nextTick = (function () {
 
     return function queueNextTick(cb?: Function, ctx?: Object) {
         let _resolve
+        // 推入callback队列
         callbacks.push(() => {
+            // 有回掉，则调用，无回掉，则调用空promise
             if (cb) {
                 try {
                     cb.call(ctx)
@@ -137,6 +149,7 @@ export const nextTick = (function () {
                 _resolve(ctx)
             }
         })
+        // 如果没有处于等待状态，则执行处理callback队列
         if (!pending) {
             pending = true
             timerFunc()
@@ -156,6 +169,7 @@ if (typeof Set !== 'undefined' && isNative(Set)) {
     _Set = Set
 } else {
     // a non-standard Set polyfill that only works with primitive keys.
+    // 利用对象实现了一个非标准的set的polyfill，仅针对原始键有效
     _Set = class Set implements ISet {
         set: Object;
 

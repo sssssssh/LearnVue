@@ -1,6 +1,7 @@
 export default function (Vue) {
     const version = Number(Vue.version.split('.')[0])
 
+    // vue1 & 2采用不同的方式注入对象
     if (version >= 2) {
         Vue.mixin({beforeCreate: vuexInit})
     } else {

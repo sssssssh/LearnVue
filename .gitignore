@@ -1,10 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea/
-.idea/*
-.idea/**/*
-.idea/codeStyles/
-.idea/inspectionProfiles/
-.idea/jsLibraryMappings.xml
-.idea/vcs.xml
-.idea/workspace.xml
+.vscode/
+.history/
 node_modules/

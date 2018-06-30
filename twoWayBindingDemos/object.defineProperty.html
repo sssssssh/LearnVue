@@ -2,9 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Proxy</title>
+    <title>defineProperty</title>
 </head>
 <body>
-    
+    <script>
+        Object.defineProperty(data, key, {
+            get: function() {
+                return val;
+            },
+            set: function(newVal) {
+                console.log(`检测值发生变化 ${val} => ${newVal}`);
+                val = newVal;
+            }
+        });
+    </script>
 </body>
 </html>
