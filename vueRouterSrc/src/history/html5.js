@@ -7,6 +7,9 @@ import { START } from '../util/route'
 import { setupScroll, handleScroll } from '../util/scroll'
 import { pushState, replaceState, supportsPushState } from '../util/push-state'
 
+/**
+ * 使用 HTML5 History来作为路由跳转
+ */
 export class HTML5History extends History {
   constructor (router: Router, base: ?string) {
     super(router, base)

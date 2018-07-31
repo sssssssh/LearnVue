@@ -1,5 +1,6 @@
 /* @flow */
 
+// 把url解析成绝对路径，类似node path.resolve()方法
 export function resolvePath (
   relative: string,
   base: string,
@@ -24,6 +25,7 @@ export function resolvePath (
   }
 
   // resolve relative path
+  // 把url分段
   const segments = relative.replace(/^\//, '').split('/')
   for (let i = 0; i < segments.length; i++) {
     const segment = segments[i]
@@ -50,12 +52,14 @@ export function parsePath (path: string): {
   let hash = ''
   let query = ''
 
+  // #号之后的算HASH，之前算PATH
   const hashIndex = path.indexOf('#')
   if (hashIndex >= 0) {
     hash = path.slice(hashIndex)
     path = path.slice(0, hashIndex)
   }
 
+  // ？号之前算path，之后算query
   const queryIndex = path.indexOf('?')
   if (queryIndex >= 0) {
     query = path.slice(queryIndex + 1)
@@ -69,6 +73,7 @@ export function parsePath (path: string): {
   }
 }
 
+// "//" => "/"
 export function cleanPath (path: string): string {
   return path.replace(/\/\//g, '/')
 }

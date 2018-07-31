@@ -5,6 +5,7 @@ import { stringifyQuery } from './query'
 
 const trailingSlashRE = /\/?$/
 
+// 通过参数拼装出一个route路由对象，最后返回一个freeze对象
 export function createRoute (
   record: ?RouteRecord,
   location: Location,
@@ -34,6 +35,7 @@ export function createRoute (
   return Object.freeze(route)
 }
 
+// 递归clone
 function clone (value) {
   if (Array.isArray(value)) {
     return value.map(clone)
@@ -49,10 +51,12 @@ function clone (value) {
 }
 
 // the starting route that represents the initial state
+// 初始路由
 export const START = createRoute(null, {
   path: '/'
 })
 
+// 数组从头到尾： 父记录 =》 子记录
 function formatMatch (record: ?RouteRecord): Array<RouteRecord> {
   const res = []
   while (record) {

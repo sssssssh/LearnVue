@@ -18,11 +18,13 @@ export function createMatcher (
   router: VueRouter
 ): Matcher {
   const { pathList, pathMap, nameMap } = createRouteMap(routes)
-
+  
+  // 动态添加路由
   function addRoutes (routes) {
     createRouteMap(routes, pathList, pathMap, nameMap)
   }
 
+  
   function match (
     raw: RawLocation,
     currentRoute?: Route,

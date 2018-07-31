@@ -33,24 +33,31 @@ export default class VueRouter {
   afterHooks: Array<?AfterNavigationHook>;
 
   constructor (options: RouterOptions = {}) {
-    this.app = null
-    this.apps = []
-    this.options = options
+    this.app = null // vue实例
+    this.apps = [] // 所有子组件的实例组件
+    this.options = options // vue-router配置
+
+    // 钩子函数的数组
     this.beforeHooks = []
     this.resolveHooks = []
     this.afterHooks = []
+
+    // 路由匹配器
     this.matcher = createMatcher(options.routes || [], this)
 
+    // 默认使用hash模式
     let mode = options.mode || 'hash'
     this.fallback = mode === 'history' && !supportsPushState && options.fallback !== false
     if (this.fallback) {
       mode = 'hash'
     }
+    // 不在浏览器中使用abstract
     if (!inBrowser) {
       mode = 'abstract'
     }
     this.mode = mode
 
+    // 根据不同的模式使用不同的类
     switch (mode) {
       case 'history':
         this.history = new HTML5History(this, options.base)
@@ -76,6 +83,7 @@ export default class VueRouter {
     return this.matcher.match(raw, current, redirectedFrom)
   }
 
+  // 返回当前路由，存在返回对象，不存在返回false
   get currentRoute (): ?Route {
     return this.history && this.history.current
   }
@@ -118,14 +126,17 @@ export default class VueRouter {
     })
   }
 
+  // 定义一个beforeEach的钩子函数
   beforeEach (fn: Function): Function {
     return registerHook(this.beforeHooks, fn)
   }
 
+  // 定义一个beforeResolve的钩子函数
   beforeResolve (fn: Function): Function {
     return registerHook(this.resolveHooks, fn)
   }
 
+  // 定义afterEach的钩子函数
   afterEach (fn: Function): Function {
     return registerHook(this.afterHooks, fn)
   }
@@ -206,6 +217,7 @@ export default class VueRouter {
     }
   }
 
+  // 动态添加路由规则
   addRoutes (routes: Array<RouteConfig>) {
     this.matcher.addRoutes(routes)
     if (this.history.current !== START) {
@@ -214,6 +226,7 @@ export default class VueRouter {
   }
 }
 
+// 注册钩子，并返回一个卸载钩子的函数
 function registerHook (list: Array<any>, fn: Function): Function {
   list.push(fn)
   return () => {

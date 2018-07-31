@@ -7,8 +7,8 @@ const encodeReserveReplacer = c => '%' + c.charCodeAt(0).toString(16)
 const commaRE = /%2C/g
 
 // fixed encodeURIComponent which is more conformant to RFC3986:
-// - escapes [!'()*]
-// - preserve commas
+// - escapes [!'()*]  encode这些
+// - preserve commas  转义 逗号
 const encode = str => encodeURIComponent(str)
   .replace(encodeReserveRE, encodeReserveReplacer)
   .replace(commaRE, ',')

@@ -28,6 +28,7 @@ export class HashHistory extends History {
       setupScroll()
     }
 
+    // 根据是否支持push选择不同的事件监听
     window.addEventListener(supportsPushState ? 'popstate' : 'hashchange', () => {
       const current = this.current
       if (!ensureSlash()) {
@@ -66,6 +67,8 @@ export class HashHistory extends History {
     window.history.go(n)
   }
 
+  // 介绍：确保url正确
+  // 详细：判断当前路由 和 要跳转的路由不一致时跳转
   ensureURL (push?: boolean) {
     const current = this.current.fullPath
     if (getHash() !== current) {
@@ -73,6 +76,7 @@ export class HashHistory extends History {
     }
   }
 
+  // 获取当前位置
   getCurrentLocation () {
     return getHash()
   }
@@ -88,6 +92,8 @@ function checkFallback (base) {
   }
 }
 
+// 作用：确保路径上有 "/"
+// 介绍：发现HASH值没有 斜杠，则返回false，同时手动添加 斜杠
 function ensureSlash (): boolean {
   const path = getHash()
   if (path.charAt(0) === '/') {
@@ -97,6 +103,7 @@ function ensureSlash (): boolean {
   return false
 }
 
+// 获取HASH值
 export function getHash (): string {
   // We can't use window.location.hash here because it's not
   // consistent across browsers - Firefox will pre-decode it!
@@ -105,6 +112,7 @@ export function getHash (): string {
   return index === -1 ? '' : href.slice(index + 1)
 }
 
+// 获取链接
 function getUrl (path) {
   const href = window.location.href
   const i = href.indexOf('#')
@@ -112,6 +120,7 @@ function getUrl (path) {
   return `${base}#${path}`
 }
 
+// push
 function pushHash (path) {
   if (supportsPushState) {
     pushState(getUrl(path))
@@ -120,6 +129,7 @@ function pushHash (path) {
   }
 }
 
+// replace
 function replaceHash (path) {
   if (supportsPushState) {
     replaceState(getUrl(path))

@@ -9,6 +9,8 @@ export function resolveAsyncComponents (matched: Array<RouteRecord>): Function {
     let pending = 0
     let error = null
 
+    // 把组件铺平到一个数组里面，同时执行后面定义的方法
+    // m.components[key],  m.instances[key],  m, key
     flatMapComponents(matched, (def, _, match, key) => {
       // if it's a function and doesn't have cid attached,
       // assume it's an async component resolve function.
@@ -82,6 +84,7 @@ export function flatMapComponents (
   }))
 }
 
+// 二级数组铺平
 export function flatten (arr: Array<any>): Array<any> {
   return Array.prototype.concat.apply([], arr)
 }

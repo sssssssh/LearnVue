@@ -8,6 +8,7 @@ const regexpCompileCache: {
   [key: string]: Function
 } = Object.create(null)
 
+// 接入 path-to-regexp，并增加缓存功能
 export function fillParams (
   path: string,
   params: ?Object,

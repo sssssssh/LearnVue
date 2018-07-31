@@ -19,7 +19,7 @@ export function normalizeLocation (
     return next
   }
 
-  // relative params
+  // relative params,zh
   if (!next.path && next.params && current) {
     next = extend({}, next)
     next._normalized = true

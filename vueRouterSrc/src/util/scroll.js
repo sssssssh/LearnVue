@@ -4,6 +4,7 @@ import type Router from '../index'
 import { assert } from './warn'
 import { getStateKey, setStateKey } from './push-state'
 
+// 生成一个空对象
 const positionStore = Object.create(null)
 
 export function setupScroll () {
@@ -17,6 +18,7 @@ export function setupScroll () {
   })
 }
 
+// 处理滚动事件
 export function handleScroll (
   router: Router,
   to: Route,
@@ -37,6 +39,7 @@ export function handleScroll (
   }
 
   // wait until re-render finishes before scrolling
+  // 利用vue的nextTick方法，确保在滚动结束后才触发重新渲染
   router.app.$nextTick(() => {
     const position = getScrollPosition()
     const shouldScroll = behavior.call(router, to, from, isPop ? position : null)
@@ -59,7 +62,9 @@ export function handleScroll (
   })
 }
 
+// 保存滚动的位置
 export function saveScrollPosition () {
+  // 根据时间生成独一无二的键
   const key = getStateKey()
   if (key) {
     positionStore[key] = {
@@ -69,6 +74,7 @@ export function saveScrollPosition () {
   }
 }
 
+// 获得一个位置信息
 function getScrollPosition (): ?Object {
   const key = getStateKey()
   if (key) {
@@ -80,16 +86,21 @@ function getElementPosition (el: Element, offset: Object): Object {
   const docEl: any = document.documentElement
   const docRect = docEl.getBoundingClientRect()
   const elRect = el.getBoundingClientRect()
+
+  // 通过计算不同DOM的位置差来获得滚动的实际位置
   return {
     x: elRect.left - docRect.left - offset.x,
     y: elRect.top - docRect.top - offset.y
   }
 }
 
+// 是否是有效的位置
+// 为什么不是判断两个字段都是数字？
 function isValidPosition (obj: Object): boolean {
   return isNumber(obj.x) || isNumber(obj.y)
 }
 
+// 正常化位置信息
 function normalizePosition (obj: Object): Object {
   return {
     x: isNumber(obj.x) ? obj.x : window.pageXOffset,
@@ -104,6 +115,7 @@ function normalizeOffset (obj: Object): Object {
   }
 }
 
+// 判断是不是数字, 类似 Object.prototype.toString.call(v) === '[object Number]'
 function isNumber (v: any): boolean {
   return typeof v === 'number'
 }
